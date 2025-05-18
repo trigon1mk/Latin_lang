@@ -1,14 +1,25 @@
 document.getElementById("translate").addEventListener("click", function () {
   const input = document.getElementById("input").value;
   const output = document.getElementById("output");
+  const language = document.getElementById("language").value;
 
-  // Простий приклад перекладу
+  // Словник для перекладу
   const dictionary = {
-    "salve": "привіт",
-    "vale": "прощавай",
-    "amicus": "друг"
+    "latin-to-ukrainian": {
+      "salve": "привіт",
+      "vale": "прощавай",
+      "amicus": "друг"
+    },
+    "ukrainian-to-latin": {
+      "привіт": "salve",
+      "прощавай": "vale",
+      "друг": "amicus"
+    }
   };
 
-  const translated = input.split(" ").map(word => dictionary[word] || word).join(" ");
+  // Логіка перекладу
+  const translated = input.split(" ")
+    .map(word => dictionary[language][word] || word)
+    .join(" ");
   output.textContent = translated;
 });
