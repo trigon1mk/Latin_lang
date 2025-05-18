@@ -1,10 +1,12 @@
 import dictionary from './Dictionary.js';
 
-// Перевірка підключення словника
 document.addEventListener("DOMContentLoaded", function () {
   const statusIndicator = document.getElementById("dictionary-status");
-  if (dictionary && Object.keys(dictionary).length > 0) {
-    statusIndicator.textContent = "Словник підключено";
+  const latinWords = Object.keys(dictionary["latin-to-ukrainian"]).length;
+  const ukrainianWords = Object.keys(dictionary["ukrainian-to-latin"]).length;
+
+  if (dictionary && latinWords > 0 && ukrainianWords > 0) {
+    statusIndicator.textContent = `Словник підключено. Латинських слів: ${latinWords}, Українських слів: ${ukrainianWords}`;
     statusIndicator.style.color = "green";
   } else {
     statusIndicator.textContent = "Словник не підключено";
@@ -12,58 +14,24 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Функція для перекладу
+// Переклад тексту
 document.getElementById("translate").addEventListener("click", function () {
   const input = document.getElementById("input").value.trim().toLowerCase();
-  console.log("Введений текст:", input);
-
   const output = document.getElementById("output");
   const language = document.getElementById("language").value;
-  console.log("Вибраний напрямок перекладу:", language);
 
   let translatedText = "Переклад не знайдено";
 
-  if (language === "latin-to-ukrainian") {
-    translatedText = dictionary["latin-to-ukrainian"][input] || translatedText;
-  } else if (language === "ukrainian-to-latin") {
-    translatedText = dictionary["ukrainian-to-latin"][input] || translatedText;
+  if (input.includes(" ")) {
+    // Переклад речення
+    const words = input.split(" ");
+    translatedText = words
+      .map((word) => dictionary[language][word] || word)
+      .join(" ");
+  } else {
+    // Переклад одного слова
+    translatedText = dictionary[language][input] || translatedText;
   }
 
-  console.log("Результат перекладу:", translatedText);
   output.textContent = translatedText;
-});
-
-// Автозаповнення для введення тексту
-document.getElementById("input").addEventListener("input", function () {
-  const input = this.value.trim().toLowerCase();
-  console.log("Введений текст для автозаповнення:", input);
-
-  const language = document.getElementById("language").value;
-  console.log("Напрямок для автозаповнення:", language);
-
-  const suggestions = document.getElementById("suggestions");
-  suggestions.innerHTML = ""; // Очищення попередніх підказок
-
-  if (!input) return; // Якщо поле пусте, не показувати підказки
-
-  const words =
-    language === "latin-to-ukrainian"
-      ? Object.keys(dictionary["latin-to-ukrainian"])
-      : Object.keys(dictionary["ukrainian-to-latin"]);
-
-  console.log("Список слів для автозаповнення:", words);
-
-  const filteredWords = words.filter((word) => word.startsWith(input));
-  console.log("Фільтровані слова:", filteredWords);
-
-  filteredWords.forEach((word) => {
-    const option = document.createElement("div");
-    option.textContent = word;
-    option.className = "suggestion-item";
-    option.addEventListener("click", function () {
-      document.getElementById("input").value = word; // Вибір слова
-      suggestions.innerHTML = ""; // Очищення підказок
-    });
-    suggestions.appendChild(option);
-  });
 });
