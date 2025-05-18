@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Функція для перекладу
 document.getElementById("translate").addEventListener("click", function () {
-  const input = document.getElementById("input").value.trim(); // Отримання введеного тексту
-  const output = document.getElementById("output"); // Поле для виводу результату
-  const language = document.getElementById("language").value; // Вибір мови
+  const input = document.getElementById("input").value.trim().toLowerCase(); // Додавання toLowerCase
+  const output = document.getElementById("output");
+  const language = document.getElementById("language").value;
 
-  let translatedText = "Переклад не знайдено"; // Значення за замовчуванням
+  let translatedText = "Переклад не знайдено";
 
   if (language === "latin-to-ukrainian") {
     translatedText = dictionary["latin-to-ukrainian"][input] || translatedText;
@@ -26,12 +26,12 @@ document.getElementById("translate").addEventListener("click", function () {
     translatedText = dictionary["ukrainian-to-latin"][input] || translatedText;
   }
 
-  output.textContent = translatedText; // Виведення результату
+  output.textContent = translatedText;
 });
 
 // Автозаповнення для введення тексту
 document.getElementById("input").addEventListener("input", function () {
-  const input = this.value.trim();
+  const input = this.value.trim().toLowerCase(); // Додавання toLowerCase
   const language = document.getElementById("language").value;
   const suggestions = document.getElementById("suggestions");
 
@@ -39,13 +39,14 @@ document.getElementById("input").addEventListener("input", function () {
 
   if (!input) return; // Якщо поле пусте, не показувати підказки
 
-  const words = language === "latin-to-ukrainian"
-    ? Object.keys(dictionary["latin-to-ukrainian"])
-    : Object.keys(dictionary["ukrainian-to-latin"]);
+  const words =
+    language === "latin-to-ukrainian"
+      ? Object.keys(dictionary["latin-to-ukrainian"])
+      : Object.keys(dictionary["ukrainian-to-latin"]);
 
-  const filteredWords = words.filter(word => word.startsWith(input));
+  const filteredWords = words.filter((word) => word.startsWith(input));
 
-  filteredWords.forEach(word => {
+  filteredWords.forEach((word) => {
     const option = document.createElement("div");
     option.textContent = word;
     option.className = "suggestion-item";
