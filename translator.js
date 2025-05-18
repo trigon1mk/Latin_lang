@@ -14,9 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Функція для перекладу
 document.getElementById("translate").addEventListener("click", function () {
-  const input = document.getElementById("input").value.trim().toLowerCase(); // Додавання toLowerCase
+  const input = document.getElementById("input").value.trim().toLowerCase();
+  console.log("Введений текст:", input);
+
   const output = document.getElementById("output");
   const language = document.getElementById("language").value;
+  console.log("Вибраний напрямок перекладу:", language);
 
   let translatedText = "Переклад не знайдено";
 
@@ -26,15 +29,19 @@ document.getElementById("translate").addEventListener("click", function () {
     translatedText = dictionary["ukrainian-to-latin"][input] || translatedText;
   }
 
+  console.log("Результат перекладу:", translatedText);
   output.textContent = translatedText;
 });
 
 // Автозаповнення для введення тексту
 document.getElementById("input").addEventListener("input", function () {
-  const input = this.value.trim().toLowerCase(); // Додавання toLowerCase
-  const language = document.getElementById("language").value;
-  const suggestions = document.getElementById("suggestions");
+  const input = this.value.trim().toLowerCase();
+  console.log("Введений текст для автозаповнення:", input);
 
+  const language = document.getElementById("language").value;
+  console.log("Напрямок для автозаповнення:", language);
+
+  const suggestions = document.getElementById("suggestions");
   suggestions.innerHTML = ""; // Очищення попередніх підказок
 
   if (!input) return; // Якщо поле пусте, не показувати підказки
@@ -44,7 +51,10 @@ document.getElementById("input").addEventListener("input", function () {
       ? Object.keys(dictionary["latin-to-ukrainian"])
       : Object.keys(dictionary["ukrainian-to-latin"]);
 
+  console.log("Список слів для автозаповнення:", words);
+
   const filteredWords = words.filter((word) => word.startsWith(input));
+  console.log("Фільтровані слова:", filteredWords);
 
   filteredWords.forEach((word) => {
     const option = document.createElement("div");
