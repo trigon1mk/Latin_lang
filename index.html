@@ -1,20 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Latin Translator</title>
+  <title>Перекладач</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Latin Translator</h1>
-  <select id="language">
-    <option value="latin-to-ukrainian">Latin → Українська</option>
-    <option value="ukrainian-to-latin">Українська → Latin</option>
-  </select>
-  <textarea id="input" placeholder="Введіть текст"></textarea>
-  <button id="translate">Перекласти</button>
-  <div id="output"></div>
-  <script src="translator.js"></script>
+  <header>
+    <h1>Латинсько-український перекладач</h1>
+    <span id="dictionary-status">Перевірка підключення словника...</span>
+  </header>
+
+  <main>
+    <section>
+      <label for="input">Введіть текст:</label>
+      <input type="text" id="input" placeholder="Введіть слово" autocomplete="off">
+      <div id="suggestions" class="suggestions"></div>
+    </section>
+
+    <section>
+      <label for="language">Виберіть напрямок перекладу:</label>
+      <select id="language">
+        <option value="latin-to-ukrainian">Латинська -> Українська</option>
+        <option value="ukrainian-to-latin">Українська -> Латинська</option>
+      </select>
+    </section>
+
+    <section>
+      <button id="translate">Перекласти</button>
+    </section>
+
+    <section>
+      <p>Результат перекладу:</p>
+      <p id="output"></p>
+    </section>
+  </main>
+
+  <script src="translator.js" type="module"></script>
 </body>
 </html>
